@@ -1,0 +1,150 @@
+# ═══════════════════════════════════════════════════════════════════
+# SECRETS — never commit
+# ═══════════════════════════════════════════════════════════════════
+.env
+.env.*
+*.env
+!.env.example
+turn-key-profile/
+soma/turn-key-profiles/
+*.pem
+*.key
+*.p12
+*.pfx
+
+# ═══════════════════════════════════════════════════════════════════
+# VENDORED DEPENDENCIES & BUILD OUTPUT — install, don't commit
+# ═══════════════════════════════════════════════════════════════════
+node_modules/
+dist/
+build/
+.vite/
+*.egg-info/
+.venv/
+venv/
+*/venv/
+
+# ═══════════════════════════════════════════════════════════════════
+# CHAT LOGS & SESSION DATA
+# ═══════════════════════════════════════════════════════════════════
+*.log
+*.log.*
+sessions/
+slice-output/
+goose_chats_last_4_days/
+kimchi sessions/
+.soma-logs/
+soma_favorites_*.json
+example_session_data.json
+session-picker-json/
+session-pickerdocs/
+data/
+soma/data/
+soma/artifacts/
+soma/stage1/
+soma/stage2/
+soma/stage3/
+soma/stage4/
+soma/workspaces/
+
+# somas/ holds the Soma graphs for real sessions. Each soma.json carries
+# Message nodes with the verbatim user and assistant text, so it is chat
+# log content under a different name. Track it deliberately or not at all.
+somas/
+
+# Databases ARE tracked. Only SQLite's transient sidecar files are not:
+# they are rewritten constantly and corrupt the repo if half-copied.
+*.db-wal
+*.db-shm
+*.json-wal
+*.json-shm
+*.sqlite3
+
+# ═══════════════════════════════════════════════════════════════════
+# NOTES, REFERENCES, WRITE-UPS, FORENSIC DUMPS
+# Markdown is excluded by default. Only the exceptions below are
+# committed: the template build inputs and the operator manuals.
+# ═══════════════════════════════════════════════════════════════════
+*.md
+!README.md
+!AGENTS.md
+!CLAUDE.md
+!SLICE.md
+!soma/machine-talk/*.md
+!soma/PIPELINE_ACTION_MAP.md
+!soma/SESSION_HANDOFF.md
+!soma/TURNKEY_TECHNICAL_MANUAL.md
+!turn-key/TB-*.md
+!turn-key/TURNKEY_TECHNICAL_MANUAL.md
+!deploy/README-pea-sync.md
+
+docs/
+docs-soma/
+skeu-style-docs/
+newmachine/
+soma/docs/
+soma/machine-talk-OLD/
+soma/pipeline/pipes/
+trevino-standard-skill/
+freshner-configs/
+soma-grok/
+
+# ═══════════════════════════════════════════════════════════════════
+# TEMP, BACKUP, DIAGNOSTIC SCRATCH
+# ═══════════════════════════════════════════════════════════════════
+*.bak
+*.bak.*
+soma_board1*.py
+*.bak-*
+*.orig
+*.rej
+*.tmp
+*.swp
+.DS_Store
+.dashboard_port
+.dump
+*.dump
+*-DNA-*.txt
+*-merged-*.txt
+merged_content.txt
+soma-grok-sync-*.txt
+debug_dashboard_report.txt
+catalog_free*.html
+novita-budget-models.html
+style-preview.html
+soma_pipeline_interactive.html
+soma_pipeline_provenance.html
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.pdf
+
+# ═══════════════════════════════════════════════════════════════════
+# LOCAL / STUB SCRIPTS & AD-HOC CONFIG
+# ═══════════════════════════════════════════════════════════════════
+.model_registry.db
+model_registry.db
+model_registry.py
+repro_fail.py
+systems_check.py
+parse_goose_chats.py
+test_models.py
+run_distiller_store.py
+shorted.yaml
+tv-ui-001.yaml
+fresh-ner-tracer-bullets.yaml
+soma-10-14-tracer-bullets*.yaml
+bin/
+.kimchi/
+
+# ═══════════════════════════════════════════════════════════════════
+# PYTHON / EDITOR / TOOLING STATE
+# ═══════════════════════════════════════════════════════════════════
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.specstory/
+.trevino-*.json
+soma/.trevino-slice-state.json
+.commit-message.txt

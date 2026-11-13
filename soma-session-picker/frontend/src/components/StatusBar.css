@@ -1,0 +1,81 @@
+/* ═════════════════════════════════════════════════════════════════════
+   STATUS BAR — engraved metal strip with LED readouts
+   ═════════════════════════════════════════════════════════════════════ */
+
+.status-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 22px;
+  flex-shrink: 0;
+  position: relative;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #7f8b99;
+  background:
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.02) 0 1px, transparent 1px 3px),
+    linear-gradient(180deg, #2a3039 0%, #1d222a 100%);
+  border-top: 2px solid #06080b;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 -4px 10px rgba(0, 0, 0, 0.4);
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.85);
+}
+
+/* Knurled top edge */
+.status-bar::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 3px;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.05) 0 1px,
+    transparent 1px 3px
+  );
+}
+
+.status-left,
+.status-right {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.status-count {
+  color: #8b97a5;
+}
+
+.status-selected {
+  color: var(--green);
+  text-shadow: 0 0 9px var(--green-glow);
+}
+
+.status-loading {
+  color: var(--amber);
+  text-shadow: 0 0 9px var(--amber-glow);
+}
+
+.status-export {
+  font-weight: 700;
+}
+
+.status-export.ok {
+  color: var(--green);
+  text-shadow: 0 0 9px var(--green-glow);
+}
+
+.status-export.err {
+  color: var(--red);
+  text-shadow: 0 0 9px var(--red-glow);
+}
+
+.status-favs {
+  color: var(--amber);
+  text-shadow: 0 0 9px var(--amber-glow);
+}

@@ -1,0 +1,315 @@
+/* ═════════════════════════════════════════════════════════════════════
+   SESSION TABLE — VFD screen with metal rack header and LED rows
+   ═════════════════════════════════════════════════════════════════════ */
+
+.session-table-wrap {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  padding: 10px 12px 12px;
+}
+
+/* ── Rack toolbar ────────────────────────────────────────────────── */
+.table-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 12px;
+  border-radius: 8px 8px 0 0;
+  border: 1px solid #06080b;
+  border-bottom: none;
+  background:
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.02) 0 1px, transparent 1px 3px),
+    linear-gradient(180deg, #2d343e 0%, #22282f 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.13),
+    0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.select-all-label {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #8b97a5;
+  cursor: pointer;
+  user-select: none;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.8);
+}
+
+/* ── VFD screen ──────────────────────────────────────────────────── */
+.table-scroll {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+  position: relative;
+  border-radius: 0 0 12px 12px;
+  border: 1px solid #000;
+  background:
+    /* glass reflection at the top of the screen */
+    linear-gradient(180deg, rgba(180, 255, 220, 0.045) 0%, transparent 18%),
+    /* scanlines */
+    repeating-linear-gradient(0deg, rgba(120, 255, 190, 0.018) 0 1px, transparent 1px 3px),
+    /* phosphor bloom */
+    radial-gradient(120% 80% at 50% -20%, rgba(60, 180, 120, 0.12) 0%, transparent 60%),
+    linear-gradient(180deg, #08110d 0%, #060b09 60%, #040705 100%);
+  box-shadow:
+    inset 0 4px 16px rgba(0, 0, 0, 0.95),
+    inset 0 0 40px rgba(0, 0, 0, 0.6),
+    0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+/* ── Table ───────────────────────────────────────────────────────── */
+.session-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.session-table thead {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background:
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.025) 0 1px, transparent 1px 3px),
+    linear-gradient(180deg, #232a33 0%, #191e25 100%);
+}
+
+.session-table th {
+  text-align: left;
+  padding: 9px 10px;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #7f8b99;
+  white-space: nowrap;
+  border-bottom: 1px solid #000;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.06), 0 -1px 0 rgba(0, 0, 0, 0.9);
+}
+
+.session-table td {
+  padding: 7px 10px;
+  max-width: 350px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.55);
+  border-left: 3px solid transparent;
+  color: #b9c7c0;
+}
+
+/* ── Rows ────────────────────────────────────────────────────────── */
+.session-row {
+  cursor: pointer;
+  transition: background 0.12s ease, border-color 0.12s ease;
+}
+
+.session-row:hover {
+  background: linear-gradient(180deg, rgba(99, 230, 160, 0.06), rgba(99, 230, 160, 0.02));
+}
+
+.session-row:hover td {
+  border-left-color: rgba(99, 230, 160, 0.25);
+}
+
+.session-row.selected {
+  background: linear-gradient(180deg, rgba(99, 230, 160, 0.1), rgba(99, 230, 160, 0.04));
+}
+.session-row.selected td {
+  border-left-color: var(--green);
+  box-shadow: inset 0 0 18px rgba(99, 230, 160, 0.06);
+}
+
+.session-row.active {
+  background: linear-gradient(180deg, rgba(255, 191, 90, 0.1), rgba(255, 191, 90, 0.04));
+}
+.session-row.active td {
+  border-left-color: var(--amber);
+  box-shadow: inset 0 0 18px rgba(255, 191, 90, 0.06);
+}
+
+.session-row.active:hover {
+  background: linear-gradient(180deg, rgba(255, 191, 90, 0.14), rgba(255, 191, 90, 0.06));
+}
+
+/* ── Columns ─────────────────────────────────────────────────────── */
+.col-fav {
+  width: 38px;
+  text-align: center;
+  padding: 5px 4px;
+}
+
+.col-fav .fav-btn {
+  background: none;
+  border: none;
+  font-size: 17px;
+  line-height: 1;
+  padding: 2px 4px;
+  cursor: pointer;
+  transition: transform 0.12s ease, filter 0.12s ease;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.8));
+}
+
+.col-fav .fav-btn:hover {
+  transform: scale(1.28);
+  filter: drop-shadow(0 0 7px rgba(255, 191, 90, 0.55));
+}
+
+.col-fav .fav-btn:active { transform: scale(0.92); }
+
+.col-check {
+  width: 42px;
+  text-align: center;
+  padding: 5px 4px;
+}
+
+.col-name {
+  max-width: 300px;
+  min-width: 200px;
+}
+
+.col-name .session-id {
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  font-size: 11px;
+  color: #a9c2b4;
+}
+
+.col-score {
+  width: 100px;
+  text-align: right;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: var(--green);
+  text-shadow: 0 0 9px var(--green-glow);
+}
+
+/* Chat sets sit immediately left of the score and carry more weight, since
+   a session's exchange count says more about its substance than the raw
+   dev score does. */
+.col-sets {
+  width: 78px;
+  text-align: right;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  color: var(--amber);
+  text-shadow: 0 0 8px var(--amber-glow);
+  white-space: nowrap;
+}
+
+.col-sets .sets-value {
+  font-size: 13px;
+  letter-spacing: 0.02em;
+}
+
+.col-sets .sets-unit {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: rgba(255, 191, 90, 0.55);
+  margin-left: 3px;
+}
+
+.col-chars {
+  width: 100px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: #7f938b;
+}
+
+.col-provider,
+.col-domain,
+.col-date {
+  width: 92px;
+  color: #8b9a93;
+}
+
+.col-title {
+  max-width: 250px;
+  min-width: 100px;
+  color: #b9c7c0;
+}
+
+/* Cell colours must out-rank the base `td` rule */
+.session-table td.col-score {
+  color: var(--green);
+  text-shadow: 0 0 9px var(--green-glow);
+}
+.session-table td.col-sets {
+  color: var(--amber);
+  text-shadow: 0 0 8px var(--amber-glow);
+}
+.session-table td.col-chars {
+  color: #7f938b;
+  text-shadow: none;
+}
+.session-table td.col-provider,
+.session-table td.col-domain,
+.session-table td.col-date {
+  color: #8b9a93;
+}
+.session-table td.col-title {
+  color: #b9c7c0;
+}
+
+/* ── Loading / empty states ──────────────────────────────────────── */
+.table-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 60px;
+  color: #7f938b;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.spinner {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 3px solid rgba(99, 230, 160, 0.1);
+  border-top-color: var(--green);
+  animation: spin 0.9s linear infinite;
+  box-shadow: 0 0 12px var(--green-glow);
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.table-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px;
+  color: #5c6a63;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.8);
+}
+
+/* ── Screen scrollbar ────────────────────────────────────────────── */
+.table-scroll::-webkit-scrollbar { width: 10px; }
+.table-scroll::-webkit-scrollbar-track {
+  background: #040705;
+  border-left: 1px solid #000;
+}
+.table-scroll::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  border: 1px solid #05070a;
+  background: linear-gradient(180deg, #3a4a42 0%, #26332d 48%, #1b2521 52%, #111815 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
+}
+.table-scroll::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #4a5c53 0%, #304038 48%, #222e29 52%, #16201b 100%);
+}
