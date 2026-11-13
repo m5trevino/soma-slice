@@ -21,7 +21,8 @@ Tests are kept only when everything they import is itself in the slice.
 - Web picker: `soma-session-picker/`
 - Docs: `AGENTS.md`, `CLAUDE.md`, `soma/PIPELINE_ACTION_MAP.md`, `soma/SESSION_HANDOFF.md`,
   `soma/TURNKEY_TECHNICAL_MANUAL.md`
-- 17 tests whose imports all live in this slice
+- 19 test files whose imports all live in this slice (incl. `test_planbeaver_payload.py` and
+  `test_no_direct_engine_calls.py`, a guard that fails if anything calls the engine without the SDK)
 
 ## Not included (by design)
 - Secrets and run data: `.env`, `.venv`, logs, `somas/`, `data/`, `session-picker-json/`
@@ -39,3 +40,14 @@ python3 -m venv .venv && .venv/bin/pip install -e <path-to-turn-key>
 ```
 Third-party Python dependencies are not pinned in the repo (the original had no
 requirements file). The board needs `textual` and `rich`.
+
+## Known failing tests (also failing in the original repo before this slice)
+- `soma/test_tb_obs_003.py`: 3 tests about the registered log/out directory.
+- `soma/test_run_engine_soma_only.py`: 3 tests expect `soma.json` at `<out>/soma.json`,
+  but the store now writes it under `somas/<SES>/`. The tests are stale against that behaviour.
+
+## Changes made while slicing
+- `engine.py`: `raw_chat_set` is now attached for planbeaver and outrobeaver (their instructions
+  require it; planbeaver answered INVALID_INPUT without it). Covered by `test_planbeaver_payload.py`.
+- `run_sessions.py`: `_save_state` creates `data/` before writing `.last_*`.
+- `soma/banner.py`: row 6 of the art had the O and M touching; a space was moved so the row keeps its width.

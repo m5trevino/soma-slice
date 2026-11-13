@@ -53,6 +53,9 @@ from . import short_codes
 # ── Stage-1 stages that drive the one-line spinner ───────────────────────
 _LIVE_STAGES = ("distiller", "introbeaver", "planbeaver", "outrobeaver")
 
+# Stages whose instruction requires raw_chat_set in the payload (tb-005, tb-006).
+_TRANSCRIPT_REQUIRED_STAGES = ("planbeaver", "outrobeaver")
+
 # Stage 1 handoff: each stage consumes the output of the one before it.
 _PREVIOUS_STAGE = {
     "introbeaver": "distiller",
@@ -558,9 +561,9 @@ class Engine:
         planned against raw text instead of an extraction. Every stage paid
         full attention cost for input the pipeline had already distilled.
 
-        ``raw_chat_set`` is still attached for the stages that must verify
-        against the transcript, because the provenance gate resolves quoted
-        text back to the message it came from.
+        ``raw_chat_set`` is attached for the distiller and for the stages whose
+        instruction requires it (``_TRANSCRIPT_REQUIRED_STAGES``); introbeaver
+        gets only the distiller's output.
         """
         payload = {
             "session_id": cs.session_id,
@@ -585,14 +588,17 @@ class Engine:
                 payload[f"{previous}_output"] = upstream
                 payload["upstream_stage"] = previous
 
-            # raw_chat_set is deliberately NOT attached. Sending it made every
-            # downstream stage re-parse the transcript the distiller had
-            # already cleaned, paid attention cost for input the pipeline had
-            # reduced, and let a stage quietly re-extract from raw source when
-            # its upstream was missing.
+            # raw_chat_set is NOT attached to introbeaver: its instruction asks
+            # for the distiller's output, and sending the transcript too made
+            # it re-parse text the distiller had already cleaned.
             #
-            # The provenance gate still needs the transcript, but it reads it
-            # from the ChatSet in the caller, not from the model's payload.
+            # planbeaver and outrobeaver are different. Their instructions
+            # list raw_chat_set as a required key and the source of truth
+            # (VALIDATE_INPUT answers INVALID_INPUT and halts without it), so
+            # leaving it out made every planbeaver call fail on the first
+            # check regardless of model. Attach it for those two.
+            if stage in _TRANSCRIPT_REQUIRED_STAGES:
+                payload["raw_chat_set"] = cs.raw_chat_set
             if not upstream:
                 payload["upstream_missing"] = previous
 

@@ -234,4 +234,4 @@ def test_default_store_is_data_short_codes(monkeypatch):
     path = short_codes.store_path()
     assert path.name == "short_codes.json"
     assert path.parent.name == "data"
-    assert path.parent.parent.name == "soma-10-14"
+    assert path.parent.parent.name == Path(__file__).resolve().parent.parent.name

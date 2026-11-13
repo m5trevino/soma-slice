@@ -124,11 +124,15 @@ def test_queue(tmp_path: Path, test_session_dir: Path) -> Path:
 @pytest.fixture()
 def test_profile(tmp_path: Path) -> Path:
     """Copy the real profile for EngineClient."""
-    src = (
-        Path(__file__).resolve().parent
-        / "turn-key-profiles"
-        / "soma-current.json"
-    )
+    here = Path(__file__).resolve().parent
+    src = here / "turn-key-profiles" / "soma-current.json"
+    if not src.exists():
+        # The profile dirs are gitignored. Use the newest real profile.
+        found = sorted((here.parent / "turn-key-profile").glob("*.json"),
+                       key=lambda f: f.stat().st_mtime)
+        if not found:
+            pytest.skip("no TurnKey profile available (turn-key-profile/ is empty)")
+        src = found[-1]
     dst = tmp_path / "profile.json"
     dst.write_text(src.read_text())
     return dst

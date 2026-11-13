@@ -676,6 +676,7 @@ def _save_state(state: dict) -> None:
     for key in ("profile", "queue", "workers"):
         if key in state:
             p = DATA_DIR / f".last_{key}"
+            p.parent.mkdir(parents=True, exist_ok=True)
             p.write_text(state[key] + "\n")
 
 
